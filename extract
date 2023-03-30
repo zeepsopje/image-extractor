@@ -1,0 +1,65 @@
+#!/usr/bin/python3
+
+import os
+import sys
+import json
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import extcolors
+from PIL import Image
+
+def rgb_to_hex(r, g, b):
+    return '#{:02x}{:02x}{:02x}'.format(r, g, b)
+
+def get_image_files(file):
+    if file.endswith('jpg') or file.endswith('png'):
+        return True
+    else:
+        return False
+
+def resize_image(file_path):
+    image = Image.open(file_path)
+    file_name, extension = os.path.splitext(file_path)
+    size = image.size
+
+    new_image_height = 190
+    new_image_width = int(size[1] / size[0] * new_image_height)
+
+    image = image.resize((new_image_height, new_image_width), Image.ANTIALIAS)
+    os.remove(file_path)
+    image.save(file_path, 'JPEG', quality=100)
+
+def extract(image):
+    return extcolors.extract_from_path(image, tolerance = 13, limit = 70)
+
+if __name__ == "__main__":
+    images = list(filter(get_image_files, os.listdir("./images")))
+
+    if len(images) == 0:
+        print("Geen afbeeldingen gevonden, plaats ze in de `images` map")
+        sys.exit(0)
+
+    for image in images:
+        print("resizing {}...".format(image))
+        resize_image('./images/' + image)
+
+    output = {}
+
+    for x, image in enumerate(images):
+        print("generating")
+        colors = extract("./images/" + image)[0]
+        occ_total = 0
+        for num in colors:
+            occ_total += num[1]
+        output[image] = []
+        for y, color in enumerate(colors):
+            hex = rgb_to_hex(color[0][0], color[0][1], color[0][2])
+            occ = color[1] / occ_total
+            output[image].append((hex, occ))
+
+    if os.path.exists("colors.json"):
+        os.remove("colors.json")
+
+    f = open("colors.json", "w")
+    f.write(json.dumps(output))
