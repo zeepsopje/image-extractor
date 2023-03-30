@@ -39,6 +39,7 @@
 		ctx.lineTo(size, size);
 		ctx.stroke();
 
+		// Draw bar
 		[0, 1, 2, 3, 4, 5].forEach(color => {
 			ctx.fillStyle = data[color][0];
 			ctx.fillRect(
@@ -89,7 +90,7 @@
 	bind:this={canvas}
 	width={size}
 	height={size + (size / 6)}
-	download="image.png"
+	download="{image_name}.png"
 />
 
 <a on:click={download}>Download</a>
