@@ -40,10 +40,10 @@
 		ctx.stroke();
 
 		// Draw bar
-		[0, 1, 2, 3, 4, 5].forEach(color => {
-			ctx.fillStyle = data[color][0];
+		data.forEach((color, i) => {
+			ctx.fillStyle = color[0];
 			ctx.fillRect(
-				color * (size / 6),
+				i * (size / 6),
 				size,
 				size / 6,
 				size / 6,

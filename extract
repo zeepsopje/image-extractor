@@ -28,7 +28,7 @@ def resize_image(file_path):
 
     image = image.resize((new_image_height, new_image_width), Image.ANTIALIAS)
     os.remove(file_path)
-    image.save(file_path, 'JPEG', quality=100)
+    image.save(file_path, 'PNG', quality=100)
 
 def extract(image):
     return extcolors.extract_from_path(image, tolerance = 13, limit = 70)
