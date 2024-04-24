@@ -2,5 +2,3 @@
 Quick prototype playing with colors extraction from images I made for a friend of mine.
 
 ![Screenshot](./screenshot.png "Screenshot")
-
-Hoi
